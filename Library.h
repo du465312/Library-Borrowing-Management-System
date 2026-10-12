@@ -3,6 +3,8 @@
 
 #include "User.h"
 #include "Book.h"
+#include "Magazine.h"
+#include "ElectronicResource.h"
 #include "BorrowRecord.h"
 #include <vector>
 #include <string>
@@ -15,6 +17,8 @@ private:
     // 这些对象作为成员随 Library 一起创建和销毁，属于“组合关系”(has-a)。
     vector<User> users;
     vector<Book> books;
+    vector<Magazine> magazines;
+    vector<ElectronicResource> electronicResources;
     vector<BorrowRecord> records;
 
     int nextUserId;
@@ -38,10 +42,21 @@ public:
     void listBooks() const;
     int getBookCount() const;
 
+    void addMagazine(const string& title, const string& issn, const string& issue,
+                     const string& publisher, int totalCopies = 1);
+    void addElectronicResource(const string& title, const string& url,
+                               const string& format, int licenses = 1);
+    Resource* findResource(int resourceId);
+    bool displayResource(int resourceId) const;
+    void listResources() const;
+    int getResourceCount() const;
+    bool changeResourceCopies(int resourceId, int change);
+    bool removeResource(int resourceId);
+
     // ==================== 借阅管理 ====================
-    // 依赖关系：以下方法通过参数接收 User、Book 对象，Library 在其实现中
-    // 使用这两个类的功能，但二者并不是 Library 的成员，属于“依赖关系”(use-a)。
+    // 通过引用使用用户和资源；资源参数接受公有派生类对象。
     bool borrowBook(User& user, Book& book);
+    bool borrowResource(int userId, int resourceId);
     bool returnBook(int recordId);
     void listRecords() const;
     int getRecordCount() const;

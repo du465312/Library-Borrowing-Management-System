@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.10)
+project(LibraryBorrowing LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(library_core Resource.cpp Book.cpp Magazine.cpp ElectronicResource.cpp
+            User.cpp BorrowRecord.cpp Library.cpp)
+target_include_directories(library_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+if(MSVC)
+    target_compile_options(library_core PUBLIC /utf-8)
+endif()
+add_executable(library_app main.cpp)
+target_link_libraries(library_app PRIVATE library_core)
+
+include(CTest)
+if(BUILD_TESTING)
+    add_executable(experiment3_tests tests/experiment3_tests.cpp)
+    target_link_libraries(experiment3_tests PRIVATE library_core)
+    add_test(NAME experiment3 COMMAND experiment3_tests)
+endif()

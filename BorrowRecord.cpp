@@ -28,7 +28,7 @@ void BorrowRecord::setReturnDate(const string& returnDate) {
 void BorrowRecord::display() const {
     cout << "记录ID: " << id
          << " | 用户ID: " << userId
-         << " | 图书ID: " << bookId
+         << " | 资源ID: " << bookId
          << " | 借阅日期: " << borrowDate
          << " | 应还日期: " << dueDate;
     if (returned) {
